@@ -1,0 +1,21 @@
+{
+  "name": "vitest-edge-wheel-repro",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
+  "packageManager": "pnpm@11.28.6",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@vitest/browser": "5.0.5",
+    "@vitest/browser-webdriverio": "5.0.0",
+    "envinfo": "7.21.0",
+    "vite": "8.0.11",
+    "vitest": "5.0.5",
+    "webdriverio": "9.29.1"
+  }
+}
