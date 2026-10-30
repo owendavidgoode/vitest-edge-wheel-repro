@@ -32,21 +32,34 @@ After the test exits, `.cache` can be deleted to remove profiles and drivers.
 
 ## Expected Observation
 
-On the recorded public-package setup, both tests fail: all 30 calls in each case
-return before the listener runs. The listener still runs afterward, and polling
-confirms that before the next observation starts. The final `late` array records
-which calls returned early.
+There are four tests: 30 single-event observations for each API and one
+`times: 5` observation for each API. All record the immediate listener count
+before any eventual-delivery polling. The multiple-event probes have no retry.
+
+Three fresh-process comparisons on the same published 5.0.5 artifact failed all
+four assertions on each baseline run and passed all four after adding only Edge
+to the existing Chromium/Chrome frame-wait predicate. In every baseline batch
+probe, four events had arrived at resolution and the fifth arrived afterward.
+Single-event timing varied; the `late` array records calls that returned early.
+
+The installed artifact was restored exactly after the comparison. This repository
+ships the unmodified public dependencies, so its assertions are expected to fail
+on the recorded environment. The upstream source experiment is separate.
 
 The final assertion expresses the proposed behavior to discuss with maintainers,
-not a claim that the API documents a universal completion guarantee. Polling for
-the listener's result is the current workaround. Timing can vary by environment.
+not a claim that the API documents a universal completion guarantee. One animation
+frame is a heuristic. Polling for the listener's result is the current workaround.
+Timing can vary by environment; no headed, background, other-platform or full-CI
+claim is made. An earlier workspace patched run failed before a profile/optimizer
+refresh; its cause remains unexplained. Published and workspace versions are
+different, particularly in their fake-timer handling.
 
 Pinned versions: Vitest and `@vitest/browser` 5.0.5,
 `@vitest/browser-webdriverio` 5.0.0, WebdriverIO 9.29.1, Vite 8.0.11.
 
 ## Context
 
-The Edge omission from the existing Chromium frame wait was publicly noted in
+The Edge omission from the existing Chromium frame wait was publicly noted by Zhuyuyangyy in
 [vitest-dev/vitest#11793](https://github.com/vitest-dev/vitest/pull/11793).
 This reproduction is separate from that PR's `toHaveStyle` work and issue #11668.
 It includes no upstream fix. The one-line upstream experiment is kept separately.
